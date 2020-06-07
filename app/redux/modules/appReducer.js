@@ -1,6 +1,9 @@
 import { fromJS, List, Map } from 'immutable';
 import notif from '../constants/notifMessage';
 import { CLOSE_NOTIF } from '../constants/notifConstants';
+
+import { ACTIONS_REDUCER } from '../shared';
+
 import {
   FETCH_DATA,
   ADD_EMPTY_ROW,
@@ -100,6 +103,12 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         mutableState.set('notifMsg', '');
       });
+
+
+    case ACTIONS_REDUCER.ADD_PROFILE:
+      alert(action.value);
+      return state;
+
     default:
       return state;
   }
