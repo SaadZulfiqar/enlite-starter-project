@@ -5,7 +5,7 @@ import MainTable from './tableParts/MainTable';
 class CrudTable extends React.Component {
   componentDidMount() {
     const { fetchData, dataInit, branch } = this.props;
-    fetchData(dataInit, branch);
+    // fetchData(dataInit, branch);
   }
 
   render() {

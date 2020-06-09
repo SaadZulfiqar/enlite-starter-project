@@ -24,48 +24,77 @@ const anchorTable = [
     type: 'static',
     initialValue: '',
     hidden: true
-  }, {
-    name: 'category',
-    label: 'Category',
-    type: 'selection',
-    initialValue: 'Electronics',
-    options: ['Electronics', 'Sporting Goods', 'Apparels', 'Other'],
+  },
+  {
+    name: 'logoPath',
+    label: 'Logo',
+    type: 'file',
+    initialValue: '',
+    // options: ['Aizaz', 'Electronics', 'Sporting Goods', 'Apparels', 'Other'],
     width: 'auto',
     hidden: false
-  }, {
-    name: 'price',
-    label: 'Price',
-    type: 'number',
-    initialValue: 0,
+  },
+  {
+    name: 'companyName',
+    label: 'Company Name',
+    type: 'text',
+    initialValue: 'Company Name',
+    // options: ['Aizaz', 'Electronics', 'Sporting Goods', 'Apparels', 'Other'],
+    width: 'auto',
+    hidden: false
+  },
+  {
+    name: 'officeNoAndBuilding',
+    label: 'Office Number',
+    type: 'text',
+    initialValue: 'This is testing',
     width: '100',
     hidden: false
   }, {
-    name: 'date',
-    label: 'Date Updated',
-    type: 'date',
-    initialValue: new Date(),
+    name: 'city',
+    label: 'City',
+    type: 'text',
+    initialValue: 'Enter City',
     width: 'auto',
     hidden: false
   }, {
-    name: 'time',
-    label: 'Time Updated',
-    type: 'time',
-    initialValue: new Date(),
+    name: 'country',
+    label: 'Country',
+    type: 'text',
+    initialValue: 'Enter Country',
     width: 'auto',
     hidden: false
   }, {
-    name: 'name',
-    label: 'Name',
+    name: 'email',
+    label: 'Email',
+    type: 'text',
+    initialValue: 'email@email.com',
+    width: 'auto',
+    hidden: false
+  }, {
+    name: 'phone',
+    label: 'Phone',
     type: 'text',
     initialValue: '',
     width: 'auto',
     hidden: false
   }, {
-    name: 'available',
-    label: 'Available',
-    type: 'toggle',
-    initialValue: true,
-    width: '100',
+    name: 'mobile',
+    label: 'Mobile',
+    type: 'text',
+    initialValue: '',
+    hidden: false
+  }, {
+    name: 'contactName',
+    label: 'Contact Name',
+    type: 'text',
+    initialValue: '',
+    hidden: false
+  }, {
+    name: 'contactTitle',
+    label: 'Contact Title',
+    type: 'text',
+    initialValue: '',
     hidden: false
   }, {
     name: 'edited',
@@ -78,68 +107,22 @@ const anchorTable = [
     label: 'Action',
     type: 'static',
     initialValue: '',
-    hidden: false
+    hidden: false,
+    width: 'auto'
   },
 ];
-const dataApi = [
-  {
-    id: 1,
-    category: 'Sporting Goods',
-    price: '49.99',
-    date: '4/3/2018',
-    time: 'Tue Apr 03 2018 00:00:00 GMT+0700 (WIB)',
-    name: 'football',
-    available: true,
-    edited: false,
-  }, {
-    id: 2,
-    category: 'Other',
-    price: '9.99',
-    date: '4/2/2018',
-    time: 'Tue Apr 03 2018 00:00:00 GMT+0700 (WIB)',
-    name: 'baseball',
-    available: true,
-    edited: false,
-  }, {
-    id: 3,
-    category: 'Sporting Goods',
-    price: '29.99',
-    date: '4/1/2018',
-    time: 'Tue Apr 03 2018 00:00:00 GMT+0700 (WIB)',
-    name: 'basketball',
-    available: false,
-    edited: false,
-  }, {
-    id: 4,
-    category: 'Electronics',
-    price: '99.99',
-    date: '3/30/2018',
-    time: 'Tue Apr 03 2018 00:00:00 GMT+0700 (WIB)',
-    name: 'iPod Touch',
-    available: true,
-    edited: false,
-  }, {
-    id: 5,
-    category: 'Electronics',
-    price: '399.99',
-    date: '3/29/2018',
-    time: 'Tue Apr 03 2018 00:00:00 GMT+0700 (WIB)',
-    name: 'iPhone 5',
-    available: false,
-    edited: false,
-  }, {
-    id: 6,
-    category: 'Electronics',
-    price: '199.99',
-    date: '3/28/2018',
-    time: 'Tue Apr 03 2018 00:00:00 GMT+0700 (WIB)',
-    name: 'nexus 7',
-    available: true,
-    edited: false,
-  }
-];
+const dataApi = [];
 
 class CrudTableDemo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { data: [] };
+  }
+
+  componentDidMount() {
+    this.props.fetchCompanyData();
+  }
+
   render() {
     const {
       classes,
@@ -155,28 +138,29 @@ class CrudTableDemo extends Component {
     } = this.props;
 
     console.log(this.props);
-
-    return (
-      <div>
-        {/* <Notification close={() => closeNotif(branch)} message={messageNotif} /> */}
-        <input type="button" value="Click me" onClick={() => this.props.testSaga('in reducer from component through saga.')} />
-        <div className={classes.rootTable}>
-          <CrudTable
-            dataInit={dataApi}
-            anchor={anchorTable}
-            title="Inventory Data"
-            dataTable={dataTable}
-            fetchData={fetchData}
-            addEmptyRow={addEmptyRow}
-            removeRow={removeRow}
-            updateRow={updateRow}
-            editRow={editRow}
-            finishEditRow={finishEditRow}
-            branch={branch}
-          />
+    if (dataApi != undefined && (dataApi != null || dataApi != dataApi.length > 0)) {
+      return (
+        <div>
+          {/* <Notification close={() => closeNotif(branch)} message={messageNotif} /> */}
+          <input type="button" value="Click me" onClick={() => this.props.testSaga('in reducer from component through saga.')} />
+          <div className={classes.rootTable}>
+            <CrudTable
+              dataInit={dataApi}
+              anchor={anchorTable}
+              title="Inventory Data"
+              dataTable={dataTable}
+              fetchData={fetchData}
+              addEmptyRow={addEmptyRow}
+              removeRow={removeRow}
+              updateRow={updateRow}
+              editRow={editRow}
+              finishEditRow={finishEditRow}
+              branch={branch}
+            />
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
@@ -213,7 +197,9 @@ const mapDispatchToProps = dispatch => ({
   editRow: bindActionCreators(editAction, dispatch),
   finishEditRow: bindActionCreators(saveAction, dispatch),
   closeNotif: bindActionCreators(closeNotifAction, dispatch),
-  testSaga: (value) => dispatch({ type: ACTIONS_SAGA.ADD_PROFILE, value })
+  // testSaga: (value) => dispatch({ type: ACTIONS_SAGA.ADD_PROFILE, value }),
+  fetchCompanyData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value }),
+
 });
 
 const CrudTableMapped = connect(

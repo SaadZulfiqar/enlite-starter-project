@@ -23,6 +23,24 @@ class EditableCell extends React.Component {
       theme,
     } = this.props;
     switch (inputType) {
+      case 'file':
+        if (edited) {
+          return (
+            <TableCell padding="none">
+              <input
+                type="file"
+                disabled={!edited}
+              />
+            </TableCell>
+          );
+        }
+        return (
+          <TableCell padding="none">
+            <img src={cellData.value} alt={cellData.type} style={{ width: '50px', height: '50px' }} />
+          </TableCell>
+        );
+
+
       case 'text':
         return (
           <TableCell padding="none">

@@ -2,7 +2,8 @@ import _ from 'lodash';
 
 export const common = {
   ADD_PROFILE: 'ADD_PROFILE',
-  ADD_PROFILE_LOADING: 'ADD_PROFILE_LOADING'
+  ADD_PROFILE_LOADING: 'ADD_PROFILE_LOADING',
+  FETCH_COMPANY_DATA: 'FETCH_COMPANY_DATA',
 };
 
 const iterateOverActions = (obj, toAppend) => {
