@@ -2,6 +2,7 @@ import {
   takeLatest, put, select, call, delay
 } from 'redux-saga/effects';
 import _ from 'lodash';
+import axios from 'axios';
 import { ACTIONS_REDUCER, ACTIONS_SAGA } from '../shared';
 
 function* fetchCompanyData(action) {
@@ -45,6 +46,63 @@ function* fetchCompanyData(action) {
   }
 }
 
+export const DEFAULTS = {
+  COMPANY: {
+    companyID: 0,
+    companyName: "",
+    logo: null,
+    logoPath: null,
+    officeNoAndBuilding: "",
+    city: "",
+    country: "",
+    email: "",
+    phone: "",
+    mobile: "",
+    contactName: "",
+    contactTitle: "",
+  }
+};
+
+function* companyCreate(action) {
+  console.log(action);
+  const value = action.value;
+
+  // TODO: improve logic
+  const data = new FormData()
+  const files = value.get('logoPath');
+  console.log(files);
+  if (files && files.length) {
+    for (var x = 0; x < files.length; x++) {
+      console.log(files[x]);
+      data.append('LogoFormFile', files[x]); // append file
+    }
+  }
+  data.append('CompanyId', 0);
+  data.append('CompanyName', value.get('companyName'));
+  data.append('OfficeNoAndBuilding', value.get('officeNoAndBuilding'));
+  data.append('City', value.get('city'));
+  data.append('Country', value.get('country'));
+  data.append('Email', value.get('email'));
+  data.append('Phone', value.get('phone'));
+  data.append('Mobile', value.get('mobile'));
+  data.append('ContactName', value.get('contactName'));
+  data.append('ContactTitle', value.get('contactTitle'));
+
+  yield axios({
+    method: 'post',
+    url: `https://indxproapi.azurewebsites.net/inproapi/company/create`,
+    data: data,
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }).then(function (response) {
+    //handle success
+    console.log(response);
+  }).catch(function (response) {
+    //handle error
+    console.log(response);
+  });
+  yield call(fetchCompanyData, { value: null });
+}
+
 function convertResults(results) {
   for (let index = 0; index < results.length; index++) {
     results[index].id = results[index].companyID;// adding id for datatables converting
@@ -55,9 +113,9 @@ function convertResults(results) {
   return results;
 }
 
-
 const appSagas = [
-  takeLatest(ACTIONS_SAGA.FETCH_COMPANY_DATA, fetchCompanyData)
+  takeLatest(ACTIONS_SAGA.FETCH_COMPANY_DATA, fetchCompanyData),
+  takeLatest(ACTIONS_SAGA.COMPANY_CREATE, companyCreate)
 ];
 
 export default appSagas;

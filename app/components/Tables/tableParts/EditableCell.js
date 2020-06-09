@@ -30,6 +30,8 @@ class EditableCell extends React.Component {
               <input
                 type="file"
                 disabled={!edited}
+                name={cellData.type}
+                onChange={(event) => this.handleUpdate(event)}
               />
             </TableCell>
           );

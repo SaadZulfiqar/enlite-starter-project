@@ -24,12 +24,18 @@ const anchorTable = [
     type: 'static',
     initialValue: '',
     hidden: true
+  }, {
+    name: 'companyID',
+    label: 'companyID',
+    type: 'static',
+    initialValue: '',
+    hidden: true
   },
   {
     name: 'logoPath',
     label: 'Logo',
     type: 'file',
-    initialValue: '',
+    initialValue: null,
     // options: ['Aizaz', 'Electronics', 'Sporting Goods', 'Apparels', 'Other'],
     width: 'auto',
     hidden: false
@@ -137,17 +143,15 @@ class CrudTableDemo extends Component {
       messageNotif,
     } = this.props;
 
-    console.log(this.props);
     if (dataApi != undefined && (dataApi != null || dataApi != dataApi.length > 0)) {
       return (
         <div>
           {/* <Notification close={() => closeNotif(branch)} message={messageNotif} /> */}
-          <input type="button" value="Click me" onClick={() => this.props.testSaga('in reducer from component through saga.')} />
           <div className={classes.rootTable}>
             <CrudTable
               dataInit={dataApi}
               anchor={anchorTable}
-              title="Inventory Data"
+              title="Company Data"
               dataTable={dataTable}
               fetchData={fetchData}
               addEmptyRow={addEmptyRow}
@@ -179,9 +183,7 @@ CrudTableDemo.propTypes = {
 
 // Reducer Branch
 const branch = 'app';
-
 const mapStateToProps = state => {
-  console.log(state);
   return {
     force: state, // force state from reducer
     dataTable: state.getIn([branch, 'dataTable']),
@@ -195,10 +197,11 @@ const mapDispatchToProps = dispatch => ({
   removeRow: bindActionCreators(removeAction, dispatch),
   updateRow: bindActionCreators(updateAction, dispatch),
   editRow: bindActionCreators(editAction, dispatch),
-  finishEditRow: bindActionCreators(saveAction, dispatch),
+
   closeNotif: bindActionCreators(closeNotifAction, dispatch),
   // testSaga: (value) => dispatch({ type: ACTIONS_SAGA.ADD_PROFILE, value }),
   fetchCompanyData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value }),
+  finishEditRow: (value) => dispatch({ type: ACTIONS_SAGA.COMPANY_CREATE, value }),
 
 });
 

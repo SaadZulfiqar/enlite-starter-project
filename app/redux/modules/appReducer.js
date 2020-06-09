@@ -2,7 +2,7 @@ import { fromJS, List, Map } from 'immutable';
 import notif from '../constants/notifMessage';
 import { CLOSE_NOTIF } from '../constants/notifConstants';
 
-import { ACTIONS_REDUCER } from '../shared';
+import { ACTIONS_REDUCER, DEFAULTS } from '../shared';
 
 import {
   FETCH_DATA,
@@ -15,18 +15,7 @@ import {
 
 const initialState = {
   dataTable: List([]),
-  dataInit: List([
-    {
-      id: 0,
-      category: '',
-      price: '',
-      date: '',
-      time: '',
-      name: '',
-      available: false,
-      edited: true,
-    }
-  ]),
+  dataInit: List([DEFAULTS.COMPANY]),
   notifMsg: '',
 };
 
@@ -76,6 +65,10 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const newVal = type => {
           if (type === 'checkbox') {
             return action.event.target.checked;
+          } 
+          if (type === 'file') {
+            console.log(action.event.target.files);
+            return action.event.target.files;
           }
           return action.event.target.value;
         };
