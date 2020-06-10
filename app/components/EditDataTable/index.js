@@ -1,213 +1,130 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import CrudTable from '../Tables/CrudTable';
-import styles from '../Tables/tableStyle-jss';
-import {
-  fetchAction,
-  addAction,
-  removeAction,
-  updateAction,
-  editAction,
-  saveAction,
-  closeNotifAction
-} from '../../redux/actions/crudTbActions';
+import PropTypes from 'prop-types';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Chip from '@material-ui/core/Chip';
+import MUIDataTable from 'mui-datatables';
+import Button from "@material-ui/core/Button";
+import TextField from '@material-ui/core/TextField';
 
-import { ACTIONS_SAGA } from '../../redux/shared';
-
-const anchorTable = [
-  {
-    name: 'id',
-    label: 'Id',
-    type: 'static',
-    initialValue: '',
-    hidden: true
-  }, {
-    name: 'companyID',
-    label: 'companyID',
-    type: 'static',
-    initialValue: '',
-    hidden: true
-  },
-  {
-    name: 'logoPath',
-    label: 'Logo',
-    type: 'file',
-    initialValue: null,
-    // options: ['Aizaz', 'Electronics', 'Sporting Goods', 'Apparels', 'Other'],
-    width: 'auto',
-    hidden: false
-  },
-  {
-    name: 'companyName',
-    label: 'Company Name',
-    type: 'text',
-    initialValue: 'Company Name',
-    // options: ['Aizaz', 'Electronics', 'Sporting Goods', 'Apparels', 'Other'],
-    width: 'auto',
-    hidden: false
-  },
-  {
-    name: 'officeNoAndBuilding',
-    label: 'Office Number',
-    type: 'text',
-    initialValue: 'This is testing',
-    width: '100',
-    hidden: false
-  }, {
-    name: 'city',
-    label: 'City',
-    type: 'text',
-    initialValue: 'Enter City',
-    width: 'auto',
-    hidden: false
-  }, {
-    name: 'country',
-    label: 'Country',
-    type: 'text',
-    initialValue: 'Enter Country',
-    width: 'auto',
-    hidden: false
-  }, {
-    name: 'email',
-    label: 'Email',
-    type: 'text',
-    initialValue: 'email@email.com',
-    width: 'auto',
-    hidden: false
-  }, {
-    name: 'phone',
-    label: 'Phone',
-    type: 'text',
-    initialValue: '',
-    width: 'auto',
-    hidden: false
-  }, {
-    name: 'mobile',
-    label: 'Mobile',
-    type: 'text',
-    initialValue: '',
-    hidden: false
-  }, {
-    name: 'contactName',
-    label: 'Contact Name',
-    type: 'text',
-    initialValue: '',
-    hidden: false
-  }, {
-    name: 'contactTitle',
-    label: 'Contact Title',
-    type: 'text',
-    initialValue: '',
-    hidden: false
-  }, {
-    name: 'edited',
-    label: '',
-    type: 'static',
-    initialValue: '',
-    hidden: true
-  }, {
-    name: 'action',
-    label: 'Action',
-    type: 'static',
-    initialValue: '',
-    hidden: false,
-    width: 'auto'
-  },
-];
-const dataApi = [];
-
-class CrudTableDemo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { data: [] };
+const styles = theme => ({
+  table: {
+    '& > div': {
+      overflow: 'auto'
+    },
+    '& table': {
+      '& td': {
+        wordBreak: 'keep-all'
+      },
+      [theme.breakpoints.down('md')]: {
+        '& td': {
+          height: 60,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }
+      }
+    }
   }
-
-  componentDidMount() {
-    this.props.fetchCompanyData();
+});
+/*
+  It uses npm mui-datatables. It's easy to use, you just describe columns and data collection.
+  Checkout full documentation here :
+  https://github.com/gregnb/mui-datatables/blob/master/README.md
+*/
+class AdvFilter extends React.Component {
+  state = {
+    columns: [
+      {
+        name: "id",
+        label: "Id",
+        options: {
+          filter: true,
+          display: 'false'
+        }
+      },
+      {
+        name: "name",
+        label: "Name",
+        options: {
+          filter: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            if (edited) {
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />
+            } else {
+              return <p>{value}</p>
+            }
+          }
+        }
+      },
+      {
+        name: "title",
+        label: "Title",
+        options: {
+          filter: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            if (edited) {
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />
+            } else {
+              return <p>{value}</p>
+            }
+          }
+        }
+      },
+      {
+        name: "edited",
+        label: "Actions",
+        options: {
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return (
+              <Fragment>
+                <Button variant="outlined" color="secondary" onClick={() => updateValue(true)}>
+                  Edit
+                </Button>
+                <Button variant="outlined" color="secondary" onClick={() => updateValue(false)}>
+                  Save
+                </Button>
+              </Fragment>
+            );
+          }
+        }
+      }
+    ],
+    data: [
+      { id: 1, name: 'chris', title: 'software engineer', edited: false },
+      { id: 2, name: 'ali', title: 'software engineer', edited: false },
+    ]
   }
 
   render() {
-    const {
-      classes,
-      fetchData,
-      addEmptyRow,
-      dataTable,
-      removeRow,
-      updateRow,
-      editRow,
-      finishEditRow,
-      closeNotif,
-      messageNotif,
-    } = this.props;
+    const { columns, data } = this.state;
+    const { classes } = this.props;
 
-    if (dataApi != undefined && (dataApi != null || dataApi != dataApi.length > 0)) {
-      return (
-        <div>
-          {/* <Notification close={() => closeNotif(branch)} message={messageNotif} /> */}
-          <div className={classes.rootTable}>
-            <CrudTable
-              dataInit={dataApi}
-              anchor={anchorTable}
-              title="Company Data"
-              dataTable={dataTable}
-              fetchData={fetchData}
-              addEmptyRow={addEmptyRow}
-              removeRow={removeRow}
-              updateRow={updateRow}
-              editRow={editRow}
-              finishEditRow={finishEditRow}
-              branch={branch}
-            />
-          </div>
-        </div>
-      );
-    }
+    const options = {
+      filterType: 'dropdown',
+      responsive: 'stacked',
+      print: false,
+      rowsPerPage: 10,
+      page: 0
+    };
+    return (
+      <div className={classes.table}>
+        <MUIDataTable
+          title="Employee list"
+          data={data}
+          columns={columns}
+          options={options}
+        />
+      </div>
+    );
   }
 }
 
-CrudTableDemo.propTypes = {
-  classes: PropTypes.object.isRequired,
-  fetchData: PropTypes.func.isRequired,
-  dataTable: PropTypes.object.isRequired,
-  addEmptyRow: PropTypes.func.isRequired,
-  removeRow: PropTypes.func.isRequired,
-  updateRow: PropTypes.func.isRequired,
-  editRow: PropTypes.func.isRequired,
-  finishEditRow: PropTypes.func.isRequired,
-  closeNotif: PropTypes.func.isRequired,
-  messageNotif: PropTypes.string.isRequired,
+AdvFilter.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
-// Reducer Branch
-const branch = 'app';
-const mapStateToProps = state => {
-  return {
-    force: state, // force state from reducer
-    dataTable: state.getIn([branch, 'dataTable']),
-    messageNotif: state.getIn([branch, 'notifMsg'])
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  fetchData: bindActionCreators(fetchAction, dispatch),
-  addEmptyRow: bindActionCreators(addAction, dispatch),
-  removeRow: bindActionCreators(removeAction, dispatch),
-  updateRow: bindActionCreators(updateAction, dispatch),
-  editRow: bindActionCreators(editAction, dispatch),
-
-  closeNotif: bindActionCreators(closeNotifAction, dispatch),
-  // testSaga: (value) => dispatch({ type: ACTIONS_SAGA.ADD_PROFILE, value }),
-  fetchCompanyData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value }),
-  finishEditRow: (value) => dispatch({ type: ACTIONS_SAGA.COMPANY_CREATE, value }),
-
-});
-
-const CrudTableMapped = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CrudTableDemo);
-
-export default withStyles(styles)(CrudTableMapped);
+export default withStyles(styles)(AdvFilter);
