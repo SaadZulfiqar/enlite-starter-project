@@ -38,7 +38,7 @@ function* fetchCompanyData(action) {
         (error) => {
           Console.length(error);
         });
-    yield put({ type: 'app/FETCH_DATA', branch: 'app', items: aa });
+    yield put({ type: ACTIONS_REDUCER.FETCH_COMPANY_DATA, value: aa });
   } catch (error) {
     console.log(error);
   } finally {
@@ -109,7 +109,7 @@ function convertResults(results) {
     results[index].edited = false; // default value;
     results[index].logoPath = 'https://indxproapi.azurewebsites.net/' + results[index].logoPath;
   }
-  console.log(results);
+  // console.log(results);
   return results;
 }
 

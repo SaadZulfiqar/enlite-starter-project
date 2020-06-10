@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -6,6 +7,7 @@ import Chip from '@material-ui/core/Chip';
 import MUIDataTable from 'mui-datatables';
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
+import { ACTIONS_SAGA } from '../../redux/shared';
 
 const styles = theme => ({
   table: {
@@ -31,7 +33,7 @@ const styles = theme => ({
   Checkout full documentation here :
   https://github.com/gregnb/mui-datatables/blob/master/README.md
 */
-class AdvFilter extends React.Component {
+class CrudTableDemo extends React.Component {
   state = {
     columns: [
       {
@@ -99,9 +101,15 @@ class AdvFilter extends React.Component {
     ]
   }
 
+  componentWillMount() {
+    this.props.fetchData();
+  }
+
   render() {
     const { columns, data } = this.state;
-    const { classes } = this.props;
+    const { classes, customers } = this.props;
+
+    console.log(this.props);
 
     const options = {
       filterType: 'dropdown',
@@ -123,8 +131,26 @@ class AdvFilter extends React.Component {
   }
 }
 
-AdvFilter.propTypes = {
-  classes: PropTypes.object.isRequired
+CrudTableDemo.propTypes = {
+  classes: PropTypes.object.isRequired,
+  customers: PropTypes.array.isRequired
 };
 
-export default withStyles(styles)(AdvFilter);
+const mapStateToProps = state => {
+  console.log(state.toJS());
+  return {
+    force: state.getIn(['app']), // force state from reducer
+    customers: state.getIn(['app', 'customers'])
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  fetchData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value })
+});
+
+const CrudTableMapped = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CrudTableDemo);
+
+export default withStyles(styles)(CrudTableMapped);

@@ -10,7 +10,7 @@ import history from 'utils/history';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import authReducer from './modules/authReducer';
 import uiReducer from './modules/uiReducer';
-import appReducer from './modules/appReducer';
+import { appReducer } from './modules/appReducer';
 import initval from './modules/initFormReducer';
 
 /**
