@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from "react-redux";
+import _ from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -107,9 +108,10 @@ class CrudTableDemo extends React.Component {
 
   render() {
     const { columns, data } = this.state;
-    const { classes, customers } = this.props;
+    const { classes, app } = this.props;
 
-    console.log(this.props);
+    const customers = _.get(app, "customers");
+    console.log(customers);
 
     const options = {
       filterType: 'dropdown',
@@ -133,14 +135,12 @@ class CrudTableDemo extends React.Component {
 
 CrudTableDemo.propTypes = {
   classes: PropTypes.object.isRequired,
-  customers: PropTypes.array.isRequired
+  app: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
-  console.log(state.toJS());
   return {
-    force: state.getIn(['app']), // force state from reducer
-    customers: state.getIn(['app', 'customers'])
+    app: state.getIn(['app'])
   };
 };
 
