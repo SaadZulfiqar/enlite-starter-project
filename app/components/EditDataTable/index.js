@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Chip from '@material-ui/core/Chip';
 import MUIDataTable from 'mui-datatables';
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { ACTIONS_SAGA } from '../../redux/shared';
 
@@ -38,71 +38,214 @@ class CrudTableDemo extends React.Component {
   state = {
     columns: [
       {
-        name: "id",
-        label: "Id",
+        name: 'companyID',
+        label: 'Id',
         options: {
           filter: true,
           display: 'false'
         }
       },
       {
-        name: "name",
-        label: "Name",
+        name: 'companyName',
+        label: 'Company Name',
         options: {
           filter: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             const { columnIndex, rowData, rowIndex } = tableMeta;
             const edited = rowData[rowData.length - 1];
             if (edited) {
-              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />
-            } else {
-              return <p>{value}</p>
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />;
             }
+            return (value);
           }
         }
       },
       {
-        name: "title",
-        label: "Title",
+        name: 'logoPath',
+        label: 'Logo',
+        options: {
+          filter: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            // if (edited) {
+            //   return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />
+            // } else {
+            //   return (value)
+            // }
+            if (edited) {
+              return (
+                <input
+                  type="file"
+                />
+              );
+            }
+            return (<img src={value} width="50px" height="50px" alt="logo" />);
+          }
+        }
+      },
+      {
+        name: 'officeNoAndBuilding',
+        label: 'Office Number',
         options: {
           filter: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             const { columnIndex, rowData, rowIndex } = tableMeta;
             const edited = rowData[rowData.length - 1];
             if (edited) {
-              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />
-            } else {
-              return <p>{value}</p>
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />;
             }
+            return (value);
+          }
+        }
+      }, {
+        name: 'city',
+        label: 'City',
+        options: {
+          filter: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            if (edited) {
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />;
+            }
+            return (value);
           }
         }
       },
       {
-        name: "edited",
-        label: "Actions",
+        name: 'country',
+        label: 'Country',
         options: {
+          filter: true,
           customBodyRender: (value, tableMeta, updateValue) => {
-            return (
-              <Fragment>
-                <Button variant="outlined" color="secondary" onClick={() => updateValue(true)}>
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            if (edited) {
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />;
+            }
+            return (value);
+          }
+        }
+      }, {
+        name: 'email',
+        label: 'Email',
+        options: {
+          filter: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            if (edited) {
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />;
+            }
+            return (value);
+          }
+        }
+      }, {
+        name: 'phone',
+        label: 'Phone',
+        options: {
+          filter: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            if (edited) {
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />;
+            }
+            return (value);
+          }
+        }
+      }, {
+        name: 'mobile',
+        label: 'Mobile',
+        options: {
+          filter: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            if (edited) {
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />;
+            }
+            return (value);
+          }
+        }
+      }, {
+        name: 'contactName',
+        label: 'Contact Name',
+        options: {
+          filter: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            if (edited) {
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />;
+            }
+            return (value);
+          }
+        }
+      }, {
+        name: 'contactTitle',
+        label: 'contact Title',
+        options: {
+          filter: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const { columnIndex, rowData, rowIndex } = tableMeta;
+            const edited = rowData[rowData.length - 1];
+            if (edited) {
+              return <TextField id="standard-basic" value={value} onChange={event => updateValue(event.target.value)} />;
+            }
+            return (value);
+          }
+        }
+      },
+      {
+        name: 'edited',
+        label: 'Actions',
+        options: {
+          customBodyRender: (value, tableMeta, updateValue) => (
+            <Fragment>
+              <Button variant="outlined" color="secondary" onClick={() => updateValue(true)}>
                   Edit
-                </Button>
-                <Button variant="outlined" color="secondary" onClick={() => updateValue(false)}>
+              </Button>
+              <Button variant="outlined" color="secondary" onClick={() => updateValue(false)}>
                   Save
-                </Button>
-              </Fragment>
-            );
-          }
+              </Button>
+            </Fragment>
+          )
         }
       }
     ],
     data: [
-      { id: 1, name: 'chris', title: 'software engineer', edited: false },
-      { id: 2, name: 'ali', title: 'software engineer', edited: false },
+      {
+        companyID: 1,
+        companyName: 'chris',
+        officeNoAndBuilding: 'Senior software engineer',
+        city: 'Senior software engineer',
+        country: 'Senior software engineer',
+        email: 'Senior software engineer',
+        phone: 'Senior software engineer',
+        mobile: 'Senior software engineer',
+        contactName: 'Senior software engineer',
+        contactTitle: 'Senior software engineer',
+        edited: false
+      },
+      {
+        companyID: 1,
+        companyName: 'chris',
+        officeNoAndBuilding: 'Senior software engineer',
+        city: 'Senior software engineer',
+        country: 'Senior software engineer',
+        email: 'Senior software engineer',
+        phone: 'Senior software engineer',
+        mobile: 'Senior software engineer',
+        contactName: 'Senior software engineer',
+        contactTitle: 'Senior software engineer',
+        edited: false
+      },
     ]
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchData();
   }
 
@@ -110,7 +253,10 @@ class CrudTableDemo extends React.Component {
     const { columns, data } = this.state;
     const { classes, app } = this.props;
 
-    const customers = _.get(app, "customers");
+    const customers = _.get(app, 'customers');
+    console.log('RRRRRRRRRRRRRRRRRRRRRRR');
+    console.log('RRRRRRRRRRRRRRRRRRRRRRR');
+    console.log('RRRRRRRRRRRRRRRRRRRRRRR');
     console.log(customers);
 
     const options = {
@@ -124,7 +270,7 @@ class CrudTableDemo extends React.Component {
       <div className={classes.table}>
         <MUIDataTable
           title="Employee list"
-          data={data}
+          data={customers}
           columns={columns}
           options={options}
         />
@@ -138,11 +284,9 @@ CrudTableDemo.propTypes = {
   app: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    app: state.getIn(['app'])
-  };
-};
+const mapStateToProps = state => ({
+  app: state.getIn(['app'])
+});
 
 const mapDispatchToProps = dispatch => ({
   fetchData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value })

@@ -14,7 +14,7 @@ function* fetchCompanyData(action) {
     // }).then((response) => response, (error) => null);
     // yield put({ type: ACTIONS_REDUCER.ADD_PROFILE, value: action.value });
 
-    const aa = yield fetch('https://indxproapi.azurewebsites.net/inproapi/company/GetAllCompany',
+    const fetchedData = yield fetch('https://indxproapi.azurewebsites.net/inproapi/company/GetAllCompany',
       {
         method: 'GET'
       }
@@ -38,7 +38,7 @@ function* fetchCompanyData(action) {
         (error) => {
           Console.length(error);
         });
-    yield put({ type: ACTIONS_REDUCER.FETCH_COMPANY_DATA, value: aa });
+    yield put({ type: ACTIONS_REDUCER.FETCH_COMPANY_DATA, value: fetchedData });
   } catch (error) {
     console.log(error);
   } finally {
@@ -49,30 +49,30 @@ function* fetchCompanyData(action) {
 export const DEFAULTS = {
   COMPANY: {
     companyID: 0,
-    companyName: "",
+    companyName: '',
     logo: null,
     logoPath: null,
-    officeNoAndBuilding: "",
-    city: "",
-    country: "",
-    email: "",
-    phone: "",
-    mobile: "",
-    contactName: "",
-    contactTitle: "",
+    officeNoAndBuilding: '',
+    city: '',
+    country: '',
+    email: '',
+    phone: '',
+    mobile: '',
+    contactName: '',
+    contactTitle: '',
   }
 };
 
 function* companyCreate(action) {
   console.log(action);
-  const value = action.value;
+  const { value } = action;
 
   // TODO: improve logic
-  const data = new FormData()
+  const data = new FormData();
   const files = value.get('logoPath');
   console.log(files);
   if (files && files.length) {
-    for (var x = 0; x < files.length; x++) {
+    for (let x = 0; x < files.length; x++) {
       console.log(files[x]);
       data.append('LogoFormFile', files[x]); // append file
     }
@@ -90,14 +90,14 @@ function* companyCreate(action) {
 
   yield axios({
     method: 'post',
-    url: `https://indxproapi.azurewebsites.net/inproapi/company/create`,
-    data: data,
+    url: 'https://indxproapi.azurewebsites.net/inproapi/company/create',
+    data,
     headers: { 'Content-Type': 'multipart/form-data' }
-  }).then(function (response) {
-    //handle success
+  }).then((response) => {
+    // handle success
     console.log(response);
-  }).catch(function (response) {
-    //handle error
+  }).catch((response) => {
+    // handle error
     console.log(response);
   });
   yield call(fetchCompanyData, { value: null });
