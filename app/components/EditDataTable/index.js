@@ -29,11 +29,7 @@ const styles = theme => ({
     }
   }
 });
-/*
-  It uses npm mui-datatables. It's easy to use, you just describe columns and data collection.
-  Checkout full documentation here :
-  https://github.com/gregnb/mui-datatables/blob/master/README.md
-*/
+
 class CrudTableDemo extends React.Component {
   state = {
     columns: [
@@ -77,6 +73,8 @@ class CrudTableDemo extends React.Component {
               return (
                 <input
                   type="file"
+                  name="logoPath"
+                  onChange={event => updateValue(event.target.files)} 
                 />
               );
             }
@@ -202,16 +200,26 @@ class CrudTableDemo extends React.Component {
         name: 'edited',
         label: 'Actions',
         options: {
-          customBodyRender: (value, tableMeta, updateValue) => (
-            <Fragment>
+          customBodyRender: (value, tableMeta, updateValue) => {
+            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+            console.log(value);
+            console.log(tableMeta);
+            //console.log(_.get(this.props.app, 'customers'));
+            return (<Fragment>
               <Button variant="outlined" color="secondary" onClick={() => updateValue(true)}>
                   Edit
               </Button>
-              <Button variant="outlined" color="secondary" onClick={() => updateValue(false)}>
+              <Button variant="outlined" color="secondary" onClick={() => {
+                updateValue(false); 
+                this.UpsertCompany(tableMeta.rowData);
+              }}>
                   Save
               </Button>
-            </Fragment>
-          )
+            </Fragment>)
+        }
         }
       }
     ],
@@ -244,7 +252,29 @@ class CrudTableDemo extends React.Component {
       },
     ]
   }
-
+  UpsertCompany(values){
+    var cols = {
+      'CompanyId' : '',
+      'CompanyName' : '',
+      'logoPath': '',
+      'OfficeNoAndBuilding': '',
+      'City' : '',
+      'Country' : '', 
+      'Email' : '',
+      'Phone' : '',
+      'Mobile' : '',
+      'ContactName' : '',
+      'ContactTitle' : ''
+    }
+    var i = 0;
+    for (const key in cols) {
+      if (cols.hasOwnProperty(key)) {
+        cols[key] = values[i];
+      }
+      i++;
+    };
+    this.props.upsertCompany(cols);
+  }
   componentDidMount() {
     this.props.fetchData();
   }
@@ -289,7 +319,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value })
+  fetchData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value }),
+  upsertCompany: (value) => dispatch({type: ACTIONS_SAGA.UPSERT_COMPANY_DATA, value})
 });
 
 const CrudTableMapped = connect(

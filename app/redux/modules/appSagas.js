@@ -63,34 +63,38 @@ export const DEFAULTS = {
   }
 };
 
-function* companyCreate(action) {
+function* upsertCompany(action) {
   console.log(action);
   const { value } = action;
-
+  
   // TODO: improve logic
   const data = new FormData();
-  const files = value.get('logoPath');
-  console.log(files);
-  if (files && files.length) {
-    for (let x = 0; x < files.length; x++) {
-      console.log(files[x]);
-      data.append('LogoFormFile', files[x]); // append file
-    }
+  const files = value.logoPath;
+  // console.log(files);
+
+  // if (files && files.length) {
+  //   for (let x = 0; x < files.length; x++) {
+  //     console.log(files[x]);
+  //     data.append('LogoFormFile', files[x]); // append file
+  //   }
+  // }
+  data.append('CompanyId', value.CompanyId);
+  data.append('CompanyName', value.CompanyName);
+  data.append('OfficeNoAndBuilding', value.OfficeNoAndBuilding);
+  data.append('City', value.City);
+  data.append('Country', value.Country);
+  data.append('Email', value.Email);
+  data.append('Phone', value.Phone);
+  data.append('Mobile', value.Mobile);
+  data.append('ContactName', value.ContactName);
+  data.append('ContactTitle', value.ContactTitle);
+  if(files[0] != undefined){
+    data.append('LogoFormFile', files[0]);
   }
-  data.append('CompanyId', 0);
-  data.append('CompanyName', value.get('companyName'));
-  data.append('OfficeNoAndBuilding', value.get('officeNoAndBuilding'));
-  data.append('City', value.get('city'));
-  data.append('Country', value.get('country'));
-  data.append('Email', value.get('email'));
-  data.append('Phone', value.get('phone'));
-  data.append('Mobile', value.get('mobile'));
-  data.append('ContactName', value.get('contactName'));
-  data.append('ContactTitle', value.get('contactTitle'));
 
   yield axios({
-    method: 'post',
-    url: 'https://indxproapi.azurewebsites.net/inproapi/company/create',
+    method: 'put',
+    url: `https://indxproapi.azurewebsites.net/inproapi/Company/UpdateCompany/${value.CompanyId}`,
     data,
     headers: { 'Content-Type': 'multipart/form-data' }
   }).then((response) => {
@@ -115,7 +119,9 @@ function convertResults(results) {
 
 const appSagas = [
   takeLatest(ACTIONS_SAGA.FETCH_COMPANY_DATA, fetchCompanyData),
-  takeLatest(ACTIONS_SAGA.COMPANY_CREATE, companyCreate)
+  // takeLatest(ACTIONS_SAGA.COMPANY_CREATE, companyCreate),
+  takeLatest(ACTIONS_SAGA.UPSERT_COMPANY_DATA, upsertCompany),
+  
 ];
 
 export default appSagas;

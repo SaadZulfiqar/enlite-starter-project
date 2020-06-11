@@ -1,8 +1,7 @@
 import _ from 'lodash';
 
 export const DEFAULTS = {
-  COMPANY: {
-    data: {
+  COMPANY:{
       id: 0,
       companyID: 0,
       logo: null,
@@ -16,7 +15,6 @@ export const DEFAULTS = {
       contactName: "",
       contactTitle: "",
       edited: true
-    }
   }
 };
 
@@ -24,6 +22,7 @@ export const common = {
   ADD_PROFILE: 'ADD_PROFILE',
   ADD_PROFILE_LOADING: 'ADD_PROFILE_LOADING',
   FETCH_COMPANY_DATA: 'FETCH_COMPANY_DATA',
+  UPSERT_COMPANY_DATA: 'UPSERT_COMPANY_DATA',
 
   COMPANY_CREATE: 'COMPANY_CREATE',
   COMPANY_CREATE_LOADING: 'COMPANY_CREATE_LOADING'
