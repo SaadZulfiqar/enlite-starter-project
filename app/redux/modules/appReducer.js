@@ -13,7 +13,7 @@ export const appReducer = (state = initialState, action) => {
   const newState = _.cloneDeep({ ...state });
   switch (action.type) {
 
-    case ACTIONS_REDUCER.FETCH_COMPANY_DATA:
+    case ACTIONS_REDUCER.SET_COMPANY_DATA:
       newState.customers = action.value;
       break;
 

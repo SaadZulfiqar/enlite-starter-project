@@ -8,11 +8,11 @@ import Chip from '@material-ui/core/Chip';
 import MUIDataTable from 'mui-datatables';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { ACTIONS_SAGA } from '../../redux/shared';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/BorderColor';
 import DoneIcon from '@material-ui/icons/Done';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { ACTIONS_SAGA, ACTIONS_REDUCER } from '../../redux/shared';
 
 const styles = theme => ({
   table: {
@@ -78,7 +78,7 @@ class CrudTableDemo extends React.Component {
                 <input
                   type="file"
                   name="logoPath"
-                  onChange={event => updateValue(event.target.files)} 
+                  onChange={event => updateValue(event.target.files)}
                 />
               );
             }
@@ -211,7 +211,7 @@ class CrudTableDemo extends React.Component {
             console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
             console.log(value);
             console.log(tableMeta);
-            if(!value){
+            if (!value) {
               return (
                 <div>
                   <IconButton
@@ -225,7 +225,7 @@ class CrudTableDemo extends React.Component {
                   >
                     <DeleteIcon />
                   </IconButton></div>
-                )
+              )
             } else {
               return (<div><IconButton
                 // onClick={() => eventDone(this)}
@@ -246,7 +246,7 @@ class CrudTableDemo extends React.Component {
                 </IconButton></div>
               )
             }
-        }
+          }
         }
       }
     ],
@@ -279,19 +279,19 @@ class CrudTableDemo extends React.Component {
       },
     ]
   }
-  UpsertCompany(values){
+  UpsertCompany(values) {
     var cols = {
-      'CompanyId' : '',
-      'CompanyName' : '',
+      'CompanyId': '',
+      'CompanyName': '',
       'logoPath': '',
       'OfficeNoAndBuilding': '',
-      'City' : '',
-      'Country' : '', 
-      'Email' : '',
-      'Phone' : '',
-      'Mobile' : '',
-      'ContactName' : '',
-      'ContactTitle' : ''
+      'City': '',
+      'Country': '',
+      'Email': '',
+      'Phone': '',
+      'Mobile': '',
+      'ContactName': '',
+      'ContactTitle': ''
     }
     var i = 0;
     for (const key in cols) {
@@ -306,9 +306,13 @@ class CrudTableDemo extends React.Component {
     this.props.fetchData();
   }
 
+  onAddCustomrt = () => {
+
+  };
+
   render() {
     const { columns, data } = this.state;
-    const { classes, app } = this.props;
+    const { classes, app, setCompnayData } = this.props;
 
     const customers = _.get(app, 'customers');
     console.log('RRRRRRRRRRRRRRRRRRRRRRR');
@@ -325,9 +329,11 @@ class CrudTableDemo extends React.Component {
     };
     return (
       <div className={classes.table}>
-    
+
         <MUIDataTable
-          title="Employee list"
+          title={<div>
+            Companies<Button style={{ marginLeft: '5px' }} color="secondary" onClick={() => setCompnayData()}>Add Company</Button>
+          </div>}
           data={customers}
           columns={columns}
           options={options}
@@ -348,7 +354,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value }),
-  upsertCompany: (value) => dispatch({type: ACTIONS_SAGA.UPSERT_COMPANY_DATA, value})
+  upsertCompany: (value) => dispatch({ type: ACTIONS_SAGA.UPSERT_COMPANY_DATA, value }),
+  setCompnayData: (value) => dispatch({ type: ACTIONS_SAGA.SET_COMPANY_DATA })
 });
 
 const CrudTableMapped = connect(

@@ -3,7 +3,12 @@ import {
 } from 'redux-saga/effects';
 import _ from 'lodash';
 import axios from 'axios';
-import { ACTIONS_REDUCER, ACTIONS_SAGA } from '../shared';
+import { ACTIONS_REDUCER, ACTIONS_SAGA, DEFAULTS } from '../shared';
+
+export const getCompanies = (state) => {
+  const app = state.getIn(['app']);
+  return _.get(app, 'customers');
+};
 
 function* fetchCompanyData(action) {
   try {
@@ -38,7 +43,7 @@ function* fetchCompanyData(action) {
         (error) => {
           Console.length(error);
         });
-    yield put({ type: ACTIONS_REDUCER.FETCH_COMPANY_DATA, value: fetchedData });
+    yield put({ type: ACTIONS_REDUCER.SET_COMPANY_DATA, value: fetchedData });
   } catch (error) {
     console.log(error);
   } finally {
@@ -46,27 +51,10 @@ function* fetchCompanyData(action) {
   }
 }
 
-export const DEFAULTS = {
-  COMPANY: {
-    companyID: 0,
-    companyName: '',
-    logo: null,
-    logoPath: null,
-    officeNoAndBuilding: '',
-    city: '',
-    country: '',
-    email: '',
-    phone: '',
-    mobile: '',
-    contactName: '',
-    contactTitle: '',
-  }
-};
-
 function* upsertCompany(action) {
   console.log(action);
   const { value } = action;
-  
+
   // TODO: improve logic
   const data = new FormData();
   const files = value.logoPath;
@@ -88,13 +76,24 @@ function* upsertCompany(action) {
   data.append('Mobile', value.Mobile);
   data.append('ContactName', value.ContactName);
   data.append('ContactTitle', value.ContactTitle);
-  if(files[0] != undefined){
+  if (files[0] != undefined) {
     data.append('LogoFormFile', files[0]);
   }
 
+  let method = '';
+  let url = '';
+
+  if (value.CompanyId > 0) {
+    method = "put";
+    url = `https://indxproapi.azurewebsites.net/inproapi/Company/UpdateCompany/${value.CompanyId}`
+  } else {
+    method = "post";
+    url = "https://indxproapi.azurewebsites.net/inproapi/company/create";
+  }
+
   yield axios({
-    method: 'put',
-    url: `https://indxproapi.azurewebsites.net/inproapi/Company/UpdateCompany/${value.CompanyId}`,
+    method: method,
+    url: url,
     data,
     headers: { 'Content-Type': 'multipart/form-data' }
   }).then((response) => {
@@ -117,11 +116,20 @@ function convertResults(results) {
   return results;
 }
 
+function* setCompnayData() {
+  const customers = yield select(getCompanies);
+  customers.unshift(DEFAULTS.COMPANY);
+  yield put({ type: ACTIONS_REDUCER.SET_COMPANY_DATA, value: customers });
+}
+
+
+
 const appSagas = [
   takeLatest(ACTIONS_SAGA.FETCH_COMPANY_DATA, fetchCompanyData),
   // takeLatest(ACTIONS_SAGA.COMPANY_CREATE, companyCreate),
   takeLatest(ACTIONS_SAGA.UPSERT_COMPANY_DATA, upsertCompany),
-  
+  takeLatest(ACTIONS_SAGA.SET_COMPANY_DATA, setCompnayData)
+
 ];
 
 export default appSagas;
