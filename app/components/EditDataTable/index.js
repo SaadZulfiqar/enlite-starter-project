@@ -9,6 +9,10 @@ import MUIDataTable from 'mui-datatables';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { ACTIONS_SAGA } from '../../redux/shared';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/BorderColor';
+import DoneIcon from '@material-ui/icons/Done';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({
   table: {
@@ -207,18 +211,41 @@ class CrudTableDemo extends React.Component {
             console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
             console.log(value);
             console.log(tableMeta);
-            //console.log(_.get(this.props.app, 'customers'));
-            return (<Fragment>
-              <Button variant="outlined" color="secondary" onClick={() => updateValue(true)}>
-                  Edit
-              </Button>
-              <Button variant="outlined" color="secondary" onClick={() => {
-                updateValue(false); 
-                this.UpsertCompany(tableMeta.rowData);
-              }}>
-                  Save
-              </Button>
-            </Fragment>)
+            if(!value){
+              return (
+                <div>
+                  <IconButton
+                    onClick={() => updateValue(true)}
+                    aria-label="Edit"
+                  ><EditIcon /></IconButton>
+                  <IconButton
+                    //onClick={() => eventDel(this)}
+                    // className={classes.button}
+                    aria-label="Delete"
+                  >
+                    <DeleteIcon />
+                  </IconButton></div>
+                )
+            } else {
+              return (<div><IconButton
+                // onClick={() => eventDone(this)}
+                color="secondary"
+                aria-label="Done"
+                onClick={() => {
+                  updateValue(false);
+                  this.UpsertCompany(tableMeta.rowData);
+                }}
+              >
+                <DoneIcon /></IconButton>
+                <IconButton
+                  //onClick={() => eventDel(this)}
+                  // className={classes.button}
+                  aria-label="Delete"
+                >
+                  <DeleteIcon />
+                </IconButton></div>
+              )
+            }
         }
         }
       }
@@ -298,6 +325,7 @@ class CrudTableDemo extends React.Component {
     };
     return (
       <div className={classes.table}>
+    
         <MUIDataTable
           title="Employee list"
           data={customers}
