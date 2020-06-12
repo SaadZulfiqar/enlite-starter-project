@@ -306,9 +306,12 @@ class CrudTableDemo extends React.Component {
     this.props.fetchData();
   }
 
-  onAddCustomrt = () => {
-
-  };
+  shouldComponentUpdate(next) {
+    if (!_.isEqual(this.props.app.customers, next.app.customers)) {
+      return true;
+    }
+    return false;
+  }
 
   render() {
     const { columns, data } = this.state;
