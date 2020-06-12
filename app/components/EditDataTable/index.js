@@ -221,6 +221,7 @@ class CrudTableDemo extends React.Component {
                   <IconButton
                     //onClick={() => eventDel(this)}
                     // className={classes.button}
+                    onClick={() => this.DeleteCompany(tableMeta.rowData)}
                     aria-label="Delete"
                   >
                     <DeleteIcon />
@@ -238,7 +239,7 @@ class CrudTableDemo extends React.Component {
               >
                 <DoneIcon /></IconButton>
                 <IconButton
-                  //onClick={() => eventDel(this)}
+                  onClick={() => this.DeleteCompany(tableMeta.rowData)}
                   // className={classes.button}
                   aria-label="Delete"
                 >
@@ -302,6 +303,10 @@ class CrudTableDemo extends React.Component {
     };
     this.props.upsertCompany(cols);
   }
+  DeleteCompany(values){
+    const id = values[0];
+    this.props.deleteCompnayData(id);
+  }
   componentDidMount() {
     this.props.fetchData();
   }
@@ -358,7 +363,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value }),
   upsertCompany: (value) => dispatch({ type: ACTIONS_SAGA.UPSERT_COMPANY_DATA, value }),
-  setCompnayData: (value) => dispatch({ type: ACTIONS_SAGA.SET_COMPANY_DATA })
+  setCompnayData: (value) => dispatch({ type: ACTIONS_SAGA.SET_COMPANY_DATA }),
+  deleteCompnayData: (value) => dispatch({ type: ACTIONS_SAGA.DELETE_COMPANY_DATA, value }),
 });
 
 const CrudTableMapped = connect(

@@ -106,6 +106,24 @@ function* upsertCompany(action) {
   yield call(fetchCompanyData, { value: null });
 }
 
+function* deleteCompnayData(action) {
+  console.log(action);
+  const { value } = action;
+  debugger;
+
+  yield axios({
+    method: 'delete',
+    url: `https://indxproapi.azurewebsites.net/inproapi/Company/DeleteCompany/${value}`,
+  }).then((response) => {
+    // handle success
+    console.log(response);
+  }).catch((response) => {
+    // handle error
+    console.log(response);
+  });
+  yield call(fetchCompanyData, { value: null });
+}
+
 function convertResults(results) {
   for (let index = 0; index < results.length; index++) {
     results[index].id = results[index].companyID;// adding id for datatables converting
@@ -128,7 +146,8 @@ const appSagas = [
   takeLatest(ACTIONS_SAGA.FETCH_COMPANY_DATA, fetchCompanyData),
   // takeLatest(ACTIONS_SAGA.COMPANY_CREATE, companyCreate),
   takeLatest(ACTIONS_SAGA.UPSERT_COMPANY_DATA, upsertCompany),
-  takeLatest(ACTIONS_SAGA.SET_COMPANY_DATA, setCompnayData)
+  takeLatest(ACTIONS_SAGA.SET_COMPANY_DATA, setCompnayData),
+  takeLatest(ACTIONS_SAGA.DELETE_COMPANY_DATA, deleteCompnayData),
 
 ];
 
