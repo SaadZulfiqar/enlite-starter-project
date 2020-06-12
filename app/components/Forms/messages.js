@@ -24,6 +24,14 @@ export default defineMessages({
     id: `${scope}.Register.or`,
     defaultMessage: 'Or register with',
   },
+  loginFieldFirstName: {
+    id: `${scope}.Register.field.firstName`,
+    defaultMessage: 'First name',
+  },
+  loginFieldLastName: {
+    id: `${scope}.Register.field.lastName`,
+    defaultMessage: 'Lasr name',
+  },
   loginFieldName: {
     id: `${scope}.Register.field.name`,
     defaultMessage: 'Username',

@@ -16,7 +16,8 @@ import {
   PASSWORD_FORGET_FAILURE,
   PASSWORD_FORGET_SUCCESS,
   SYNC_USER,
-  HIDE_MSG
+  HIDE_MSG,
+  REGISTER_WITH_EMAIL_SAGA_SUCCESS
 } from '../constants/authConstants';
 
 export const AuthState = new Record({
@@ -36,6 +37,13 @@ export default function authReducer(state = new AuthState(), action = {}) {
       return {
         ...state,
         loading: true,
+        message: null
+      };
+
+    case REGISTER_WITH_EMAIL_SAGA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
         message: null
       };
 

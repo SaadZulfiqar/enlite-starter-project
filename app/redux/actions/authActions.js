@@ -48,6 +48,11 @@ export const registerWithEmailSuccess = credential => ({
   credential
 });
 
+export const registerWithEmailSagaSuccess = message => ({
+  type: types.REGISTER_WITH_EMAIL_SAGA_SUCCESS,
+  message
+});
+
 export const registerWithEmailFailure = error => ({
   type: types.REGISTER_WITH_EMAIL_FAILURE,
   error

@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   call, fork, put, take, takeEvery, all
 } from 'redux-saga/effects';
@@ -9,6 +10,7 @@ import {
   LOGOUT_REQUEST,
   REGISTER_WITH_EMAIL_REQUEST,
   REGISTER_WITH_EMAIL_SUCCESS,
+  REGISTER_WITH_EMAIL_SAGA_SUCCESS,
   PASSWORD_FORGET_REQUEST,
 } from '../constants/authConstants';
 import {
@@ -20,6 +22,7 @@ import {
   loginWithEmailFailure,
   syncUser,
   registerWithEmailSuccess,
+  registerWithEmailSagaSuccess,
   registerWithEmailFailure,
   createUserSuccess,
   createUserFailure,
@@ -29,7 +32,7 @@ import {
 
 function getUrlVars() {
   const vars = {};
-  const parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) { // eslint-disable-line
+  const parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) { // eslint-disable-line
     vars[key] = value;
   });
   return vars;
@@ -51,29 +54,61 @@ function* loginSaga(provider) {
   }
 }
 
-function* loginWithEmailSaga(payload) {
+function* loginWithEmailSaga(action) {
   try {
-    const data = yield call(firebaseAuth.signInWithEmailAndPassword, payload.email, payload.password);
-    yield put(loginWithEmailSuccess(data));
-    if (getUrlVars().next) {
-      // Redirect to next route
-      yield history.push('/app/' + getUrlVars().next);
-    } else {
-      // Redirect to dashboard if no next parameter
-      yield history.push('/app');
+    const data = {
+      UserName: action.value.getIn(['username']),
+      Password: action.value.getIn(['password'])
+    };
+
+    const token = yield axios({
+      method: 'post',
+      url: 'https://indxproapi.azurewebsites.net/inproapi/auth/login',
+      data,
+    }).then((response) => {
+      return response.data;
+    }).catch((error) => {
+      throw error;
+    });
+
+    if (token) {
+      localStorage.setItem('id', token);
+      yield put(loginWithEmailSuccess(token));
+      if (getUrlVars().next) {
+        // Redirect to next route
+        yield history.push('/app/' + getUrlVars().next);
+      } else {
+        // Redirect to dashboard if no next parameter
+        yield history.push('/app');
+      }
     }
   } catch (error) {
+    localStorage.removeItem('id');
     yield put(loginWithEmailFailure(error));
   }
 }
 
-function* registerWithEmailSaga(payload) {
+function* registerWithEmailSaga(action) {
   try {
-    yield call(firebaseAuth.createUserWithEmailAndPassword, payload.email, payload.password);
-    const dataWithName = yield call(firebaseAuth.updateProfile, {
-      displayName: payload.name,
+    const data = {
+      Email: action.value.getIn(['email']),
+      FirstName: action.value.getIn(['firstName']),
+      LastName: action.value.getIn(['lastName']),
+      Password: action.value.getIn(['password'])
+    };
+
+    yield axios({
+      method: 'post',
+      url: 'https://indxproapi.azurewebsites.net/inproapi/account/Register',
+      data,
+    }).then((response) => {
+      alert("User has been registered. Please login to continue.");
+      return response.data;
+    }).catch((error) => {
+      throw error;
     });
-    yield put(registerWithEmailSuccess(dataWithName));
+
+    yield put(registerWithEmailSagaSuccess());
     // Redirect to dashboard
     yield history.push('/app');
   } catch (error) {
@@ -134,7 +169,7 @@ function* passwordForgetSaga({ email }) {
 function* loginRootSaga() {
   yield fork(syncUserSaga);
   yield all([
-    takeEvery(LOGIN_REQUEST, loginSaga),
+    // takeEvery(LOGIN_REQUEST, loginSaga),
     takeEvery(LOGIN_WITH_EMAIL_REQUEST, loginWithEmailSaga),
     takeEvery(REGISTER_WITH_EMAIL_REQUEST, registerWithEmailSaga),
     takeEvery(REGISTER_WITH_EMAIL_SUCCESS, createUserSaga),

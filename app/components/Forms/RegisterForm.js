@@ -101,10 +101,22 @@ class RegisterForm extends React.Component { // eslint-disable-line
             <div>
               <FormControl className={classes.formControl}>
                 <Field
-                  name="name"
+                  name="firstName"
                   component={TextFieldRedux}
-                  placeholder={intl.formatMessage(messages.loginFieldName)}
-                  label={intl.formatMessage(messages.loginFieldName)}
+                  placeholder={"First Name"}
+                  label={"First Name"}
+                  required
+                  className={classes.field}
+                />
+              </FormControl>
+            </div>
+            <div>
+              <FormControl className={classes.formControl}>
+                <Field
+                  name="lastName"
+                  component={TextFieldRedux}
+                  placeholder={"Last Name"}
+                  label={"Last Name"}
                   required
                   className={classes.field}
                 />

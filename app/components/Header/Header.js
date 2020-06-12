@@ -171,15 +171,15 @@ class Header extends React.Component {
                     </IconButton>
                   </Tooltip>
                 ) : (
-                  <Tooltip title={intl.formatMessage(messages.exitFullScreen)} placement="bottom">
-                    <IconButton
-                      className={classes.button}
-                      onClick={this.openFullScreen}
-                    >
-                      <FullscreenOutlined />
-                    </IconButton>
-                  </Tooltip>
-                )}
+                    <Tooltip title={intl.formatMessage(messages.exitFullScreen)} placement="bottom">
+                      <IconButton
+                        className={classes.button}
+                        onClick={this.openFullScreen}
+                      >
+                        <FullscreenOutlined />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                 <Tooltip title={intl.formatMessage(messages.lamp)} placement="bottom">
                   <IconButton
                     className={classes.button}
@@ -218,7 +218,7 @@ class Header extends React.Component {
           </Hidden>
           <div className={classes.userToolbar}>
             <SelectLanguage />
-            {isLogin
+            {/* {isLogin
               ? <UserMenu signOut={signOut} avatar={avatar} />
               : (
                 <Button
@@ -232,7 +232,20 @@ class Header extends React.Component {
                   <FormattedMessage {...messages.login} />
                 </Button>
               )
-            }
+            } */}
+            <Button
+              color="secondary"
+              className={classes.buttonTop}
+              component={Link}
+              to={link.login}
+              variant="contained"
+              onClick={() => {
+                localStorage.removeItem('id');
+                location.reload();
+              }}
+            >
+              Logout
+            </Button>
           </div>
         </Toolbar>
       </AppBar>

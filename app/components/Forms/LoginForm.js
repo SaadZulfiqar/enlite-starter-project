@@ -102,12 +102,12 @@ class LoginForm extends React.Component { // eslint-disable-line
             <div>
               <FormControl className={classes.formControl}>
                 <Field
-                  name="email"
+                  name="username"
                   component={TextFieldRedux}
-                  placeholder={intl.formatMessage(messages.loginFieldEmail)}
-                  label={intl.formatMessage(messages.loginFieldEmail)}
+                  placeholder={intl.formatMessage(messages.loginFieldName)}
+                  label={intl.formatMessage(messages.loginFieldName)}
                   required
-                  validate={[required, email]}
+                  validate={required}
                   className={classes.field}
                 />
               </FormControl>

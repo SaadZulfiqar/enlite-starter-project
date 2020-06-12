@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +13,7 @@ import logo from 'enl-images/logo.svg';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+import { REGISTER_WITH_EMAIL_REQUEST } from '../../../redux/constants/authConstants';
 
 class Register extends React.Component {
   state = {
@@ -21,9 +23,10 @@ class Register extends React.Component {
   submitForm(values) {
     setTimeout(() => {
       this.setState({ valueForm: values });
-      console.log(`You submitted:\n\n${this.state.valueForm.get('email')}`); // eslint-disable-line
-      window.location.href = '/app';
+      // console.log(`You submitted:\n\n${this.state.valueForm.get('email')}`); // eslint-disable-line
+      // window.location.href = '/app';
     }, 500); // simulate server latency
+    this.props.registerWithEmailSaga(values);
   }
 
   render() {
@@ -81,4 +84,19 @@ Register.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Register);
+const mapStateToProps = state => {
+  return {
+    auth: state.getIn(['authReducer'])
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+  registerWithEmailSaga: (value) => dispatch({ type: REGISTER_WITH_EMAIL_REQUEST, value })
+});
+
+const RegisterConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Register);
+
+export default withStyles(styles)(RegisterConnect);

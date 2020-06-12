@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import brand from 'enl-api/dummy/brand';
 import PropTypes from 'prop-types';
@@ -12,6 +13,7 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import styles from 'enl-components/Forms/user-jss';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+import { LOGIN_WITH_EMAIL_REQUEST } from '../../../redux/constants/authConstants';
 
 class Login extends React.Component {
   state = {
@@ -22,9 +24,10 @@ class Login extends React.Component {
     const { valueForm } = this.state;
     setTimeout(() => {
       this.setState({ valueForm: values });
-      console.log(`You submitted:\n\n${valueForm}`);
-      window.location.href = '/app';
+      // console.log(`You submitted:\n\n${valueForm}`);
+      // window.location.href = '/app';
     }, 500); // simulate server latency
+    this.props.loginWithEmailSaga(values);
   }
 
   render() {
@@ -84,4 +87,19 @@ Login.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Login);
+const mapStateToProps = state => {
+  return {
+    auth: state.getIn(['authReducer'])
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+  loginWithEmailSaga: (value) => dispatch({ type: LOGIN_WITH_EMAIL_REQUEST, value })
+});
+
+const LoginConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
+
+export default withStyles(styles)(LoginConnect);
