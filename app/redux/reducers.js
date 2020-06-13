@@ -11,6 +11,7 @@ import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import authReducer from './modules/authReducer';
 import uiReducer from './modules/uiReducer';
 import { appReducer } from './modules/appReducer';
+import { companySliderReducer } from './modules/companySliderReducer';
 import initval from './modules/initFormReducer';
 
 /**
@@ -21,6 +22,7 @@ export default function createReducer(injectedReducers = {}) {
     form,
     ui: uiReducer,
     app: appReducer,
+    mainSlider: companySliderReducer,
     initval,
     authReducer,
     language: languageProviderReducer,

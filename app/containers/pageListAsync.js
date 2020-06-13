@@ -69,3 +69,8 @@ export const EditDataTable = Loadable({
   loader: () => import('../components/EditDataTable'),
   loading: Loading,
 });
+
+export const CompanyMainSlider = Loadable({
+  loader: () => import('../components/CompanyMainSlider'),
+  loading: Loading,
+});

@@ -15,6 +15,13 @@ export const DEFAULTS = {
       contactName: "",
       contactTitle: "",
       edited: true
+  },
+  MAINSLIER:{
+    companyID: 0,
+    companyMainImageID: 0,
+    image: "",
+    isPublished: false,
+    edited: true
   }
 };
 
@@ -28,6 +35,12 @@ export const common = {
 
   COMPANY_CREATE: 'COMPANY_CREATE',
   COMPANY_CREATE_LOADING: 'COMPANY_CREATE_LOADING',
+  // Main Slider
+  FETCH_COMPANY_MAIN_SLIDER: 'FETCH_COMPANY_MAIN_SLIDER',
+  SET_COMPANY_MAIN_SLIDER: 'SET_COMPANY_MAIN_SLIDER',
+  UPSERT_COMPANY_MAIN_SLIDER: 'UPSERT_COMPANY_MAIN_SLIDER',
+  DELETE_COMPANY_MAIN_SLIDER_DATA : 'DELETE_COMPANY_MAIN_SLIDER_DATA',
+
 };
 
 const iterateOverActions = (obj, toAppend) => {
@@ -44,5 +57,6 @@ const iterateOverActions = (obj, toAppend) => {
 const clonedReducer = _.cloneDeep(common); const clonedSaga = _.cloneDeep(common);
 iterateOverActions(clonedSaga, 'SAGA');
 iterateOverActions(clonedReducer, 'REDUCER');
+
 export const ACTIONS_SAGA = clonedSaga;
 export const ACTIONS_REDUCER = clonedReducer;

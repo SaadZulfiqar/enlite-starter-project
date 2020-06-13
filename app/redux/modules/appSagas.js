@@ -109,7 +109,6 @@ function* upsertCompany(action) {
 function* deleteCompnayData(action) {
   console.log(action);
   const { value } = action;
-  debugger;
 
   yield axios({
     method: 'delete',

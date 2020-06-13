@@ -259,34 +259,6 @@ class CrudTableDemo extends React.Component {
         }
       }
     ],
-    data: [
-      {
-        companyID: 1,
-        companyName: 'chris',
-        officeNoAndBuilding: 'Senior software engineer',
-        city: 'Senior software engineer',
-        country: 'Senior software engineer',
-        email: 'Senior software engineer',
-        phone: 'Senior software engineer',
-        mobile: 'Senior software engineer',
-        contactName: 'Senior software engineer',
-        contactTitle: 'Senior software engineer',
-        edited: false
-      },
-      {
-        companyID: 1,
-        companyName: 'chris',
-        officeNoAndBuilding: 'Senior software engineer',
-        city: 'Senior software engineer',
-        country: 'Senior software engineer',
-        email: 'Senior software engineer',
-        phone: 'Senior software engineer',
-        mobile: 'Senior software engineer',
-        contactName: 'Senior software engineer',
-        contactTitle: 'Senior software engineer',
-        edited: false
-      },
-    ]
   }
   UpsertCompany(values) {
     var cols = {
@@ -327,7 +299,7 @@ class CrudTableDemo extends React.Component {
   }
 
   render() {
-    const { columns, data } = this.state;
+    const { columns } = this.state;
     const { classes, app, setCompnayData } = this.props;
 
     const customers = _.get(app, 'customers');
