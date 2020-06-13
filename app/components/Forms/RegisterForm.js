@@ -178,38 +178,6 @@ class RegisterForm extends React.Component { // eslint-disable-line
             </div>
           </form>
         </section>
-        <h5 className={classes.divider}>
-          <FormattedMessage {...messages.registerOr} />
-        </h5>
-        <section className={classes.socmedSideLogin}>
-          <Button
-            variant="contained"
-            className={classes.redBtn}
-            type="button"
-            size="large"
-          >
-            <Ionicon icon="logo-google" />
-            Google
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.cyanBtn}
-            type="button"
-            size="large"
-          >
-            <Ionicon icon="logo-twitter" />
-            Twitter
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.greyBtn}
-            type="button"
-            size="large"
-          >
-            <Ionicon icon="logo-github" />
-            Github
-          </Button>
-        </section>
       </Paper>
     );
   }

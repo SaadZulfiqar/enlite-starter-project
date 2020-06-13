@@ -139,11 +139,11 @@ class LoginForm extends React.Component { // eslint-disable-line
               </FormControl>
             </div>
             <div className={classes.optArea}>
-              <FormControlLabel
+              {/* <FormControlLabel
                 className={classes.label}
                 control={<Field name="checkbox" component={CheckboxRedux} />}
                 label={intl.formatMessage(messages.loginRemember)}
-              />
+              /> */}
               <Button size="small" component={LinkBtn} to="/reset-password" className={classes.buttonLink}>
                 <FormattedMessage {...messages.loginForgotPassword} />
               </Button>
@@ -156,38 +156,6 @@ class LoginForm extends React.Component { // eslint-disable-line
               </Button>
             </div>
           </form>
-        </section>
-        <h5 className={classes.divider}>
-          <FormattedMessage {...messages.loginOr} />
-        </h5>
-        <section className={classes.socmedSideLogin}>
-          <Button
-            variant="contained"
-            className={classes.redBtn}
-            type="button"
-            size="large"
-          >
-            <Ionicon icon="logo-google" />
-            Google
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.cyanBtn}
-            type="button"
-            size="large"
-          >
-            <Ionicon icon="logo-twitter" />
-            Twitter
-          </Button>
-          <Button
-            variant="contained"
-            className={classes.greyBtn}
-            type="button"
-            size="large"
-          >
-            <Ionicon icon="logo-github" />
-            Github
-          </Button>
         </section>
       </Paper>
     );

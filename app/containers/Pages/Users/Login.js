@@ -68,9 +68,6 @@ class Login extends React.Component {
                   <ArrowBack />
                   &nbsp;back to site
                 </NavLink>
-                <div className={classes.lang}>
-                  <SelectLanguage />
-                </div>
               </div>
             </div>
           </Hidden>
