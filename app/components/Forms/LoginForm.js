@@ -80,10 +80,10 @@ class LoginForm extends React.Component { // eslint-disable-line
           <Typography variant="h4" className={classes.title}>
             <FormattedMessage {...messages.login} />
           </Typography>
-          <Button size="small" className={classes.buttonLink} component={LinkBtn} to="/register">
+          {/* <Button size="small" className={classes.buttonLink} component={LinkBtn} to="/register">
             <Icon className={classNames(classes.icon, classes.signArrow)}>arrow_forward</Icon>
             <FormattedMessage {...messages.createNewAccount} />
-          </Button>
+          </Button> */}
         </div>
         {
           messagesAuth !== null || ''

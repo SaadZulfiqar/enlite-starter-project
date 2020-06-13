@@ -69,6 +69,11 @@ module.exports = [
         link: '/app'
       },
       {
+        key: 'project',
+        name: 'Projects',
+        link: 'app/projects'
+      },
+      {
         key: 'generic_page',
         name: 'Generic',
         title: true,

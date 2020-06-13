@@ -11,7 +11,8 @@ import {
   Table,
   Parent,
   EditDataTable,
-  CompanyMainSlider
+  CompanyMainSlider,
+  Project
 } from '../pageListAsync';
 
 class Application extends React.Component {
@@ -22,6 +23,7 @@ class Application extends React.Component {
         <Switch>
           { /* Home */ }
           <Route exact path="/app" component={EditDataTable} />
+          <Route exact path="/app/projects" component={Project} />
           <Route path="/app/dashboard" component={CompanyMainSlider} />
           <Route path="/app/form" component={Form} />
           <Route path="/app/table" component={Table} />

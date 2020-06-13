@@ -74,3 +74,8 @@ export const CompanyMainSlider = Loadable({
   loader: () => import('../components/CompanyMainSlider'),
   loading: Loading,
 });
+
+export const Project = Loadable({
+  loader: () => import('../components/Project'),
+  loading: Loading,
+});
