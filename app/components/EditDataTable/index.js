@@ -13,6 +13,12 @@ import EditIcon from '@material-ui/icons/BorderColor';
 import DoneIcon from '@material-ui/icons/Done';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { ACTIONS_SAGA, ACTIONS_REDUCER } from '../../redux/shared';
+import {
+  createMuiTheme,
+  MuiThemeProvider
+} from "@material-ui/core/styles";
+import  "../../styles/custom.css"
+
 
 const styles = theme => ({
   table: {
@@ -61,7 +67,7 @@ class CrudTableDemo extends React.Component {
         }
       },
       {
-        name: 'logoPath',
+        name: 'logo',
         label: 'Logo',
         options: {
           filter: false,
@@ -77,12 +83,12 @@ class CrudTableDemo extends React.Component {
               return (
                 <input
                   type="file"
-                  name="logoPath"
+                  name="logo"
                   onChange={event => updateValue(event.target.files)}
                 />
               );
             }
-            return (<img src={value} width="50px" height="50px" alt="logo" />);
+            return (<img src={value} style={{width:"50px", height:"auto"}} alt="logo" />);
           }
         }
       },
@@ -213,7 +219,7 @@ class CrudTableDemo extends React.Component {
             console.log(tableMeta);
             if (!value) {
               return (
-                <div>
+                <div style={{minWidth:"110px"}}>
                   <IconButton
                     onClick={() => updateValue(true)}
                     aria-label="Edit"
@@ -228,7 +234,9 @@ class CrudTableDemo extends React.Component {
                   </IconButton></div>
               )
             } else {
-              return (<div><IconButton
+              return (
+                <div style={{minWidth:"110px"}}>
+                <IconButton
                 // onClick={() => eventDone(this)}
                 color="secondary"
                 aria-label="Done"
@@ -284,7 +292,7 @@ class CrudTableDemo extends React.Component {
     var cols = {
       'CompanyId': '',
       'CompanyName': '',
-      'logoPath': '',
+      'logo': '',
       'OfficeNoAndBuilding': '',
       'City': '',
       'Country': '',
@@ -337,15 +345,15 @@ class CrudTableDemo extends React.Component {
     };
     return (
       <div className={classes.table}>
-
-        <MUIDataTable
-          title={<div>
-            Companies<Button style={{ marginLeft: '5px' }} color="secondary" onClick={() => setCompnayData()}>Add Company</Button>
-          </div>}
-          data={customers}
-          columns={columns}
-          options={options}
-        />
+          
+          <MUIDataTable
+            title={<div>
+              Companies<Button style={{ marginLeft: '5px' }} color="secondary" onClick={() => setCompnayData()}>Add Company</Button>
+            </div>}
+            data={customers}
+            columns={columns}
+            options={options}
+          />
       </div>
     );
   }

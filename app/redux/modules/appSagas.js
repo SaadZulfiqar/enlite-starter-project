@@ -57,7 +57,7 @@ function* upsertCompany(action) {
 
   // TODO: improve logic
   const data = new FormData();
-  const files = value.logoPath;
+  const files = value.logo;
   // console.log(files);
 
   // if (files && files.length) {
@@ -77,7 +77,7 @@ function* upsertCompany(action) {
   data.append('ContactName', value.ContactName);
   data.append('ContactTitle', value.ContactTitle);
   if (files[0] != undefined) {
-    data.append('LogoFormFile', files[0]);
+    data.append('logo', files[0]);
   }
 
   let method = '';
@@ -128,7 +128,7 @@ function convertResults(results) {
   for (let index = 0; index < results.length; index++) {
     results[index].id = results[index].companyID;// adding id for datatables converting
     results[index].edited = false; // default value;
-    results[index].logoPath = 'https://indxproapi.azurewebsites.net/' + results[index].logoPath;
+    results[index].logo = 'https://indxproapi.azurewebsites.net/' + results[index].logo;
   }
   // console.log(results);
   return results;
