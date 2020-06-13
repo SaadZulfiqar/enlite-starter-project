@@ -3,21 +3,18 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Chip from '@material-ui/core/Chip';
 import MUIDataTable from 'mui-datatables';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/BorderColor';
 import DoneIcon from '@material-ui/icons/Done';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import { ACTIONS_SAGA, ACTIONS_REDUCER } from '../../redux/shared';
-import {
-  createMuiTheme,
-  MuiThemeProvider
-} from "@material-ui/core/styles";
-import  "../../styles/custom.css"
+import "../../styles/custom.css"
 
 
 const styles = theme => ({
@@ -56,7 +53,18 @@ class CompanyMainSlider extends React.Component {
         label: 'companyID',
         options: {
           filter: true,
-          display: 'false'
+          //display: 'false',
+          customBodyRender: (value, tableMeta, updateValue) =>{
+            return (<FormControl  style={{ overflow: "hidden" }}>
+              <Select
+                value={this.props.app.customers[0].companyID}
+                onChange={this.handleChange}
+                input={<Input name="age" id="age-simple" />}
+                autoWidth>
+                {this.props.app.customers.map((option, index) => <MenuItem value={option.companyID} key={index.toString()}>{option.companyName}</MenuItem>)}
+              </Select>
+            </FormControl>)
+          }
         }
       },
       {
@@ -69,15 +77,18 @@ class CompanyMainSlider extends React.Component {
             const edited = rowData[rowData.length - 1];
             if (edited) {
               return (
-                <input
-                  type="file"
-                  name="logo"
-                  onChange={event => updateValue(event.target.files)}
-                />
+                <div>
+                  <input
+                    type="file"
+                    name="logo"
+                    onChange={event => { updateValue(event.target.files) }} />
+                  <img src={`${value}`}
+                    width="100px" height="auto" />
+                </div>
               );
             }
             console.log(value);
-            return (<img src={value} style={{width:"100px", height:"auto"}} alt="logo" />);
+            return (<img src={value} style={{ width: "100px", height: "auto" }} alt="logo" />);
           }
         }
       },
@@ -86,48 +97,35 @@ class CompanyMainSlider extends React.Component {
         label: 'Actions',
         options: {
           customBodyRender: (value, tableMeta, updateValue) => {
-            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-            console.log(value);
-            console.log(tableMeta);
             if (!value) {
               return (
-                <div style={{minWidth:"110px"}}>
+                <div style={{ minWidth: "110px" }}>
                   <IconButton
                     onClick={() => updateValue(true)}
                     aria-label="Edit"
                   ><EditIcon /></IconButton>
                   <IconButton
-                    //onClick={() => eventDel(this)}
-                    // className={classes.button}
                     onClick={() => this.DeleteCompany(tableMeta.rowData)}
-                    aria-label="Delete"
-                  >
+                    aria-label="Delete">
                     <DeleteIcon />
                   </IconButton></div>
               )
             } else {
               return (
-                <div style={{minWidth:"110px"}}>
-                <IconButton
-                // onClick={() => eventDone(this)}
-                color="secondary"
-                aria-label="Done"
-                onClick={() => {
-                  updateValue(false);
-                  this.UpsertCompanyMainSlider(tableMeta.rowData);
-                }}
-              >
-                <DoneIcon /></IconButton>
-                <IconButton
-                  onClick={() => this.DeleteCompany(tableMeta.rowData)}
-                  // className={classes.button}
-                  aria-label="Delete"
-                >
-                  <DeleteIcon />
-                </IconButton></div>
+                <div style={{ minWidth: "110px" }}>
+                  <IconButton
+                    color="secondary"
+                    aria-label="Done"
+                    onClick={() => {
+                      updateValue(false);
+                      this.UpsertCompanyMainSlider(tableMeta.rowData);
+                    }}>
+                    <DoneIcon /></IconButton>
+                  <IconButton
+                    onClick={() => this.DeleteCompany(tableMeta.rowData)}
+                    aria-label="Delete">
+                    <DeleteIcon />
+                  </IconButton></div>
               )
             }
           }
@@ -135,11 +133,12 @@ class CompanyMainSlider extends React.Component {
       }
     ],
   }
+
   UpsertCompanyMainSlider(values) {
     var cols = {
       'companyMainImageID': '',
       'CompanyId': '',
-      'image':'',
+      'image': '',
     }
     var i = 0;
     for (const key in cols) {
@@ -148,19 +147,15 @@ class CompanyMainSlider extends React.Component {
       }
       i++;
     };
-    debugger;
     this.props.upsertCompanyMainSlider(cols);
   }
-  DeleteCompany(values){
+  DeleteCompany(values) {
     const id = values[0];
     this.props.deleteCompnayMainSliderData(id);
   }
+  
   componentDidMount() {
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-    console.log('$$$$$$$$$$$$$$$$$ COMPONENT DID MOUNT $$$$$$$$$$$$$$$$$$');
+    this.props.fetchCompanies();
     this.props.fetchData();
   }
 
@@ -173,13 +168,10 @@ class CompanyMainSlider extends React.Component {
 
   render() {
     const { columns } = this.state;
-    const { classes, mainSlider, setSliderData } = this.props;
-
+    const { classes, mainSlider, setSliderData, app } = this.props;
+    
     const companySlider = _.get(mainSlider, 'companySlider');
-    console.log('RRRRRRRRRRR RENDER CALLED! RRRRRRRRRRRR');
-    console.log('RRRRRRRRRRR RENDER CALLED! RRRRRRRRRRRR');
-    console.log('RRRRRRRRRRR RENDER CALLED! RRRRRRRRRRRR');
-    console.log(companySlider);
+    const companies = _.get(app, 'customers');
     const options = {
       filterType: 'dropdown',
       responsive: 'stacked',
@@ -189,7 +181,7 @@ class CompanyMainSlider extends React.Component {
     };
     return (
       <div className={classes.table}>
-          <MUIDataTable
+        <MUIDataTable
           title={<div>
             Main Slider:
               <Button
@@ -199,10 +191,10 @@ class CompanyMainSlider extends React.Component {
               onClick={() => setSliderData()}>
               Add Image</Button>
           </div>}
-            data={companySlider}
-            columns={columns}
-            options={options}
-          />
+          data={companySlider}
+          columns={columns}
+          options={options}
+        />
       </div>
     );
   }
@@ -210,22 +202,22 @@ class CompanyMainSlider extends React.Component {
 
 CompanyMainSlider.propTypes = {
   classes: PropTypes.object.isRequired,
-  mainSlider: PropTypes.object.isRequired
+  mainSlider: PropTypes.object.isRequired,
+  app: PropTypes.object.isRequired,
+
 };
 
 const mapStateToProps = state => ({
-  mainSlider: state.getIn(['mainSlider'])
+  mainSlider: state.getIn(['mainSlider']),
+  app: state.getIn(['app'])
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_MAIN_SLIDER, value }),
   setSliderData: (value) => dispatch({ type: ACTIONS_SAGA.SET_COMPANY_MAIN_SLIDER }),
-  upsertCompanyMainSlider: (value) => dispatch({ type: ACTIONS_SAGA.UPSERT_COMPANY_MAIN_SLIDER, value}),
+  upsertCompanyMainSlider: (value) => dispatch({ type: ACTIONS_SAGA.UPSERT_COMPANY_MAIN_SLIDER, value }),
   deleteCompnayMainSliderData: (value) => dispatch({ type: ACTIONS_SAGA.DELETE_COMPANY_MAIN_SLIDER_DATA, value }),
-  // fetchData: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_MAIN_SLIDER, value }),
-  // upsertCompany: (value) => dispatch({ type: ACTIONS_SAGA.UPSERT_COMPANY_DATA, value }),
-  // setSliderData: (value) => dispatch({ type: ACTIONS_SAGA.SET_COMPANY_MAIN_SLIDER }),
-  
+  fetchCompanies: (value) => dispatch({ type: ACTIONS_SAGA.FETCH_COMPANY_DATA, value }),
 });
 
 const CompanyMainSliderMmainSlidered = connect(

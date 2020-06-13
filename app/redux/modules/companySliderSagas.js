@@ -70,7 +70,7 @@ import {
   
     if (value.CompanyId > 0) {
       method = "put";
-      url = `https://indxproapi.azurewebsites.net/inproapi/Company/UpdateCompany/${value.CompanyId}`
+      url = `https://indxproapi.azurewebsites.net/inproapi/CompanyMainImage/UpdateCompanyMainImage/${value.companyMainImageID}`
     } else {
       method = "post";
       url = "https://indxproapi.azurewebsites.net/inproapi/CompanyMainImage/create";
