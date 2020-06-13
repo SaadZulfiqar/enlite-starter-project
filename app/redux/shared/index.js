@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
 
 export const DEFAULTS = {
   COMPANY: {
@@ -34,7 +33,7 @@ export const DEFAULTS = {
     totalProjectBudget: 0,
     startingDate: new Date(),
     deadline: new Date(),
-    completionDate: moment(new Date()).format('MM/DD/YYYY'),
+    completionDate: new Date(),
     contractID: 0,
     edited: true
   }
@@ -50,7 +49,7 @@ export const common = {
 
   COMPANY_CREATE: 'COMPANY_CREATE',
   COMPANY_CREATE_LOADING: 'COMPANY_CREATE_LOADING',
-  
+
   // Main Slider
   FETCH_COMPANY_MAIN_SLIDER: 'FETCH_COMPANY_MAIN_SLIDER',
   SET_COMPANY_MAIN_SLIDER: 'SET_COMPANY_MAIN_SLIDER',
