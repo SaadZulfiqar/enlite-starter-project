@@ -79,3 +79,8 @@ export const Project = Loadable({
   loader: () => import('../components/Project'),
   loading: Loading,
 });
+
+export const ProjectMedia = Loadable({
+  loader: () => import('../components/ProjectMedia'),
+  loading: Loading,
+});

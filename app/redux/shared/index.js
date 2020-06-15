@@ -36,6 +36,17 @@ export const DEFAULTS = {
     completionDate: new Date(),
     contractID: 0,
     edited: true
+  },
+  PROJECT_MEDIA: {
+    projectMediaID: 0,
+    projectID: 0,
+    isPublished: true,
+    projectLocation: '',
+    brand: '',
+    scopeOfWork: '',
+    dateOfCompletion: new Date(),
+    projectDescription: '',
+    edited: true
   }
 };
 
@@ -60,7 +71,13 @@ export const common = {
   FETCH_PROJECT_DATA: 'FETCH_PROJECT_DATA',
   SET_PROJECT_DATA: 'SET_PROJECT_DATA',
   UPSERT_PROJECT_DATA: 'UPSERT_PROJECT_DATA',
-  DELETE_PROJECT_DATA: 'DELETE_PROJECT_DATA'
+  DELETE_PROJECT_DATA: 'DELETE_PROJECT_DATA',
+
+  // Project Media
+  FETCH_PROJECT_MEDIA_DATA: 'FETCH_PROJECT_MEDIA_DATA',
+  SET_PROJECT_MEDIA_DATA: 'SET_PROJECT_MEDIA_DATA',
+  UPSERT_PROJECT_MEDIA_DATA: 'UPSERT_PROJECT_MEDIA_DATA',
+  DELETE_PROJECT_MEDIA_DATA: 'DELETE_PROJECT_MEDIA_DATA'
 };
 
 const iterateOverActions = (obj, toAppend) => {
