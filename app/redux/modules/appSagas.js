@@ -43,6 +43,7 @@ function* fetchCompanyData(action) {
         (error) => {
           Console.length(error);
         });
+    if (fetchedData === undefined) { fetchedData = []; }
     yield put({ type: ACTIONS_REDUCER.SET_COMPANY_DATA, value: fetchedData });
   } catch (error) {
     console.log(error);
@@ -84,16 +85,16 @@ function* upsertCompany(action) {
   let url = '';
 
   if (value.CompanyId > 0) {
-    method = "put";
-    url = `https://indxproapi.azurewebsites.net/inproapi/Company/UpdateCompany/${value.CompanyId}`
+    method = 'put';
+    url = `https://indxproapi.azurewebsites.net/inproapi/Company/UpdateCompany/${value.CompanyId}`;
   } else {
-    method = "post";
-    url = "https://indxproapi.azurewebsites.net/inproapi/company/create";
+    method = 'post';
+    url = 'https://indxproapi.azurewebsites.net/inproapi/company/create';
   }
 
   yield axios({
-    method: method,
-    url: url,
+    method,
+    url,
     data,
     headers: { 'Content-Type': 'multipart/form-data' }
   }).then((response) => {
@@ -138,7 +139,6 @@ function* setCompnayData() {
   customers.unshift(DEFAULTS.COMPANY);
   yield put({ type: ACTIONS_REDUCER.SET_COMPANY_DATA, value: customers });
 }
-
 
 
 const appSagas = [

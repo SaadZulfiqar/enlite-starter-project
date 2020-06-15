@@ -70,13 +70,13 @@ export const EditDataTable = Loadable({
   loading: Loading,
 });
 
-export const CompanyMainSlider = Loadable({
-  loader: () => import('../components/CompanyMainSlider'),
+export const Project = Loadable({
+  loader: () => import('../components/Project'),
   loading: Loading,
 });
 
-export const Project = Loadable({
-  loader: () => import('../components/Project'),
+export const CompanyMainSlider = Loadable({
+  loader: () => import('../components/CompanyMainSlider'),
   loading: Loading,
 });
 

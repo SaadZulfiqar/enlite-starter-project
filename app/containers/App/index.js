@@ -10,10 +10,9 @@ window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
 class App extends React.Component {
   render() {
-
     const { auth: { loggedIn } } = this.props;
     const authenticated = (!!(localStorage.getItem('id')) || loggedIn);
-    
+
     return (
       <ThemeWrapper>
         <AppContext.Consumer>
@@ -23,13 +22,13 @@ class App extends React.Component {
               <Route
                 path="/app"
                 render={(props) => <Application {...props} changeMode={changeMode} />}
-              /> 
-             <Route component={Auth} />*/}
-              
+              />
+             <Route component={Auth} /> */}
 
-              <Route path="/register" render={(props) => authenticated ? <Redirect to="/app" {...props} /> : <RegisterDedicated />} />
-              <Route path="/app" render={(props) => authenticated ? <Application {...props} changeMode={changeMode} /> : <Redirect to="/" />} />
-              <Route path="/" render={(props) => authenticated ? <Redirect to="/app" {...props} /> : <LoginDedicated />} />
+
+              {/* <Route path="/register" render={(props) => authenticated ? <Redirect to="/app" {...props} /> : <RegisterDedicated />} /> */}
+              <Route path="/app" render={(props) => (authenticated ? <Application {...props} changeMode={changeMode} /> : <Redirect to="/" />)} />
+              <Route path="/" render={(props) => (authenticated ? <Redirect to="/app" {...props} /> : <LoginDedicated />)} />
 
             </Switch>
           )}
@@ -39,11 +38,9 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    auth: state.getIn(['authReducer'])
-  }
-};
+const mapStateToProps = state => ({
+  auth: state.getIn(['authReducer'])
+});
 
 const mapDispatchToProps = dispatch => ({
 });
@@ -54,4 +51,3 @@ const AppConnect = connect(
 )(App);
 
 export default AppConnect;
-
